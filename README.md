@@ -1,33 +1,32 @@
-# Book My Stay App – Use Case 7
+# Book My Stay App – Use Case 8
 
 ## Approach
-- Extends booking model with optional services.
-- AddOnService represents individual offerings (e.g., Breakfast, Spa).
-- AddOnServiceManager maps reservation IDs to lists of services.
-- Services are attached after room allocation, without affecting inventory.
-- Costs aggregated separately from booking logic.
+- Introduces booking history tracking for confirmed reservations.
+- BookingHistory stores reservations in insertion order using List<Reservation>.
+- BookingReportService generates reports from stored data.
+- Separation of concerns: storage vs reporting logic.
+- Data stored in memory but treated as persistent audit trail.
 
 ## Flow
-1. Guest selects one or more add-on services.
-2. Services are added to a list.
-3. List mapped to reservation ID in AddOnServiceManager.
-4. Total cost calculated for selected services.
-5. Core booking and inventory state remain unchanged.
+1. Booking confirmed.
+2. Reservation added to BookingHistory.
+3. History maintains ordered records.
+4. Admin requests report.
+5. BookingReportService retrieves and displays stored reservations.
 
 ## Key Concepts
-- Business extensibility: supports real-world booking enhancements.
-- One-to-many relationship: one reservation → many services.
-- Map + List combination for efficient lookup and ordered storage.
-- Composition over inheritance for flexible feature growth.
-- Separation of core and optional features.
-- Modular cost aggregation.
+- Operational visibility: admins can review past bookings.
+- List data structure preserves chronological order.
+- Historical tracking creates an audit trail.
+- Reporting readiness: structured data supports summaries.
+- Separation of storage and reporting reduces coupling.
 
 ## Benefits
-- Flexible attachment of optional services.
-- Clean mapping between bookings and value-added features.
-- Easy expansion of services without core booking changes.
-- Preserves stability of booking and inventory logic.
+- Complete and traceable booking audit trail.
+- Simplified reporting and analysis.
+- Supports customer issue resolution.
+- Prepares system for persistence (files/databases).
 
 ## Drawbacks of Previous Use Case
-- Use Case 6 confirmed room allocation but treated bookings as static.
-- No support for optional services or enhancements.
+- Use Case 7 added services but did not retain booking history.
+- No way to review or analyze completed transactions.
