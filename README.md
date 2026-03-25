@@ -1,33 +1,34 @@
-# Book My Stay App – Use Case 3
+# Book My Stay App – Use Case 4
 
 ## Approach
-- Centralized inventory replaces scattered availability variables.
-- Room availability stored in a HashMap<String, Integer>.
-- RoomInventory class encapsulates all inventory logic.
+- Guests can view available rooms without modifying inventory.
+- RoomSearchService provides read-only search functionality.
+- RoomInventory holds availability counts centrally.
 - Room classes define characteristics (beds, size, price).
-- Separation of concerns: Room = "what it is", Inventory = "how many available".
-- Scalable design: new room types added by inserting into the map.
+- Clear separation: Search = read-only, Booking = write operations.
 
 ## Flow
-1. System initializes RoomInventory.
-2. Room types registered with availability counts.
-3. Availability stored and retrieved from HashMap.
-4. Updates performed via updateAvailability().
-5. Current inventory state displayed when requested.
+1. Guest initiates a room search request.
+2. System retrieves availability data from RoomInventory.
+3. Room details and pricing are obtained from Room objects.
+4. Rooms with zero availability are filtered out.
+5. Available room types and their details are displayed.
+6. System state remains unchanged.
 
 ## Key Concepts
-- Problem solved: scattered variables → inconsistent state.
-- HashMap provides O(1) average lookup and update.
-- Encapsulation ensures controlled access to inventory.
-- Extensibility: easy to add new room types without changing main logic.
+- Read-only access ensures safe data usage.
+- Defensive programming checks availability before display.
+- Separation of concerns: search logic isolated from booking logic.
+- Inventory acts as the single source of truth for availability.
+- Domain model provides descriptive room information.
+- Validation excludes unavailable room types.
 
 ## Benefits
-- Single source of truth for availability.
-- Fast and efficient inventory access.
-- Cleaner, scalable design.
-- Clear separation between room definition and availability.
+- Accurate availability visibility without state mutation.
+- Reduced risk of accidental inventory corruption.
+- Clear boundary between search and booking responsibilities.
+- Guests see only actionable options.
 
 ## Drawbacks of Previous Use Case
-- Independent variables for availability.
-- Risk of duplication and inconsistency.
-- Poor scalability as system complexity grows.
+- Use Case 3 centralized inventory but did not enforce read-only access.
+- Risk of accidental modification during non-booking operations.
