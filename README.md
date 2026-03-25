@@ -1,32 +1,32 @@
-# Book My Stay App – Use Case 5
+# Book My Stay App – Use Case 6
 
 ## Approach
-- Introduces booking request intake mechanism.
-- Uses Queue<Reservation> to store requests in arrival order.
-- Reservation class captures guest intent (guest name + room type).
-- BookingRequestQueue manages requests fairly using FIFO principle.
-- No inventory mutation or room allocation at this stage.
+- Confirms booking requests by assigning unique room IDs.
+- Uses Set<String> to enforce uniqueness of room IDs.
+- Maps room types to allocated IDs with HashMap<String, Set<String>>.
+- Updates inventory immediately after allocation.
+- Prevents double-booking by design.
 
 ## Flow
-1. Guest submits a booking request.
-2. Request is added to the booking queue.
-3. Queue preserves arrival order automatically.
-4. Requests wait for allocation system to process them.
-5. System state remains unchanged until allocation.
+1. Booking request dequeued from FIFO queue.
+2. System checks availability for requested room type.
+3. Unique room ID generated and assigned.
+4. Room ID recorded to prevent reuse.
+5. Inventory count decremented immediately.
+6. Reservation confirmed.
 
 ## Key Concepts
-- Queue data structure models real-world waiting lines.
-- FIFO ensures fairness: earliest request processed first.
-- Request ordering guaranteed without manual sorting.
-- Decoupling intake from allocation improves scalability.
+- Double-booking problem solved with Set enforcing uniqueness.
+- HashMap groups room IDs by type for tracking.
+- Atomic operations: allocation + inventory update together.
+- Inventory synchronization ensures consistent state.
 
 ## Benefits
-- Fair and deterministic request handling.
-- Predictable behavior under peak demand.
-- Simplified coordination before allocation.
-- Equal treatment of all guests based on arrival time.
+- Guaranteed uniqueness of room assignments.
+- Immediate synchronization between booking and inventory.
+- Elimination of double-booking scenarios.
+- Predictable and safe allocation process.
 
 ## Drawbacks of Previous Use Case
-- Use Case 4 allowed room visibility but not booking intent.
-- No mechanism to handle simultaneous booking attempts.
-- Risk of unfair or inconsistent request handling.
+- Use Case 5 handled request ordering but not confirmation.
+- No uniqueness enforcement, risk of conflicting assignments.
