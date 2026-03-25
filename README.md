@@ -1,34 +1,32 @@
-# Book My Stay App – Use Case 4
+# Book My Stay App – Use Case 5
 
 ## Approach
-- Guests can view available rooms without modifying inventory.
-- RoomSearchService provides read-only search functionality.
-- RoomInventory holds availability counts centrally.
-- Room classes define characteristics (beds, size, price).
-- Clear separation: Search = read-only, Booking = write operations.
+- Introduces booking request intake mechanism.
+- Uses Queue<Reservation> to store requests in arrival order.
+- Reservation class captures guest intent (guest name + room type).
+- BookingRequestQueue manages requests fairly using FIFO principle.
+- No inventory mutation or room allocation at this stage.
 
 ## Flow
-1. Guest initiates a room search request.
-2. System retrieves availability data from RoomInventory.
-3. Room details and pricing are obtained from Room objects.
-4. Rooms with zero availability are filtered out.
-5. Available room types and their details are displayed.
-6. System state remains unchanged.
+1. Guest submits a booking request.
+2. Request is added to the booking queue.
+3. Queue preserves arrival order automatically.
+4. Requests wait for allocation system to process them.
+5. System state remains unchanged until allocation.
 
 ## Key Concepts
-- Read-only access ensures safe data usage.
-- Defensive programming checks availability before display.
-- Separation of concerns: search logic isolated from booking logic.
-- Inventory acts as the single source of truth for availability.
-- Domain model provides descriptive room information.
-- Validation excludes unavailable room types.
+- Queue data structure models real-world waiting lines.
+- FIFO ensures fairness: earliest request processed first.
+- Request ordering guaranteed without manual sorting.
+- Decoupling intake from allocation improves scalability.
 
 ## Benefits
-- Accurate availability visibility without state mutation.
-- Reduced risk of accidental inventory corruption.
-- Clear boundary between search and booking responsibilities.
-- Guests see only actionable options.
+- Fair and deterministic request handling.
+- Predictable behavior under peak demand.
+- Simplified coordination before allocation.
+- Equal treatment of all guests based on arrival time.
 
 ## Drawbacks of Previous Use Case
-- Use Case 3 centralized inventory but did not enforce read-only access.
-- Risk of accidental modification during non-booking operations.
+- Use Case 4 allowed room visibility but not booking intent.
+- No mechanism to handle simultaneous booking attempts.
+- Risk of unfair or inconsistent request handling.
