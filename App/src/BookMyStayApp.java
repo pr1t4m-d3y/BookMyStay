@@ -1,27 +1,30 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class BookMyStayApp {
 
     public static void main(String[] args) {
-        int singleRoomAvailable = 5;
-        int doubleRoomAvailable = 3;
-        int suiteRoomAvailable = 2;
+        RoomInventory inventory = new RoomInventory();
 
         Room single = new SingleRoom();
         Room doubleR = new DoubleRoom();
         Room suite = new SuiteRoom();
 
+        System.out.println("Hotel Room Inventory Status\n");
+
         System.out.println("Single Room:");
         single.displayRoomDetails();
-        System.out.println("Available: " + singleRoomAvailable);
+        System.out.println("Available Rooms: " + inventory.getRoomAvailability().get("SingleRoom"));
         System.out.println();
 
         System.out.println("Double Room:");
         doubleR.displayRoomDetails();
-        System.out.println("Available: " + doubleRoomAvailable);
+        System.out.println("Available Rooms: " + inventory.getRoomAvailability().get("DoubleRoom"));
         System.out.println();
 
         System.out.println("Suite Room:");
         suite.displayRoomDetails();
-        System.out.println("Available: " + suiteRoomAvailable);
+        System.out.println("Available Rooms: " + inventory.getRoomAvailability().get("SuiteRoom"));
     }
 }
 
@@ -53,4 +56,27 @@ class DoubleRoom extends Room {
 
 class SuiteRoom extends Room {
     public SuiteRoom() { super(3, 750, 5000.0); }
+}
+
+class RoomInventory {
+    private Map<String, Integer> roomAvailability;
+
+    public RoomInventory() {
+        roomAvailability = new HashMap<>();
+        initializeInventory();
+    }
+
+    private void initializeInventory() {
+        roomAvailability.put("SingleRoom", 5);
+        roomAvailability.put("DoubleRoom", 3);
+        roomAvailability.put("SuiteRoom", 2);
+    }
+
+    public Map<String, Integer> getRoomAvailability() {
+        return roomAvailability;
+    }
+
+    public void updateAvailability(String roomType, int count) {
+        roomAvailability.put(roomType, count);
+    }
 }
